@@ -173,7 +173,7 @@ class FirmDish
 
 class Program
 {
-    static void Main(string[] args)
+    static void Main()
     {
         List<FirmDish> menu = new List<FirmDish>();
 
