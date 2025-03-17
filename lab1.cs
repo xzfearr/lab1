@@ -158,6 +158,8 @@ class FirmDish
 
     public void SaveToFile(string filename)
     {
+        string dir = Path.GetDirectoryName(filename);
+        Directory.CreateDirectory(dir);
         using (StreamWriter writer = new StreamWriter(filename))
         {
             writer.WriteLine(ingredientsCount);
@@ -197,7 +199,7 @@ class Program
         //saving data of all dishes to text files
         foreach (var dish in menu)
         {
-            string filename = $"{dish.GetType().Name}_{Guid.NewGuid()}.txt";
+            string filename = gettempfilename("Dish");
             dish.SaveToFile(filename);
         }
 
@@ -208,7 +210,7 @@ class Program
             dish.FillRandomValues();
             dish.DisplayRecipe();
             Console.WriteLine();
-            string filename = $"Dish_{Guid.NewGuid()}.txt";
+            string filename = gettempfilename("Dish");
             dish.SaveToFile(filename);
         }
 
@@ -217,7 +219,7 @@ class Program
         FirmDish userDish = new FirmDish();
         userDish.FillFromKeyboard();
         userDish.DisplayRecipe();
-        userDish.SaveToFile($"Dish_{Guid.NewGuid()}.txt");
+        userDish.SaveToFile(gettempfilename("Dish"));
 
         //total cost of each dish
         Console.WriteLine("Total cost of each dish:");
@@ -250,5 +252,11 @@ class Program
 
         //the number of dishes
         Console.WriteLine($"\nNumber of dishes created: {FirmDish.DishCount}");
+    }
+
+    static string gettempfilename(string name){
+        string filename = $"{name}_{Guid.NewGuid()}.txt";
+        string p = Path.Join("temp", filename);
+        return p;
     }
 }
